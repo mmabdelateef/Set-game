@@ -13,6 +13,8 @@
 		06E30BCE24F93C16009041B6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06E30BCD24F93C16009041B6 /* Preview Assets.xcassets */; };
 		06E30BD924F93C16009041B6 /* SetGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BD824F93C16009041B6 /* SetGameTests.swift */; };
 		06E30BE424F93C16009041B6 /* SetGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BE324F93C16009041B6 /* SetGameUITests.swift */; };
+		06E30BF224F93C43009041B6 /* SetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BF124F93C43009041B6 /* SetGame.swift */; };
+		06E30BF424F953D6009041B6 /* SetGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BF324F953D6009041B6 /* SetGameViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +47,8 @@
 		06E30BDF24F93C16009041B6 /* SetGameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SetGameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		06E30BE324F93C16009041B6 /* SetGameUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameUITests.swift; sourceTree = "<group>"; };
 		06E30BE524F93C16009041B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		06E30BF124F93C43009041B6 /* SetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGame.swift; sourceTree = "<group>"; };
+		06E30BF324F953D6009041B6 /* SetGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,6 +101,8 @@
 			children = (
 				06E30BC624F93C12009041B6 /* SetGameApp.swift */,
 				06E30BC824F93C12009041B6 /* ContentView.swift */,
+				06E30BF124F93C43009041B6 /* SetGame.swift */,
+				06E30BF324F953D6009041B6 /* SetGameViewModel.swift */,
 				06E30BCA24F93C16009041B6 /* Assets.xcassets */,
 				06E30BCF24F93C16009041B6 /* Info.plist */,
 				06E30BCC24F93C16009041B6 /* Preview Content */,
@@ -260,7 +266,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				06E30BC924F93C12009041B6 /* ContentView.swift in Sources */,
+				06E30BF224F93C43009041B6 /* SetGame.swift in Sources */,
 				06E30BC724F93C12009041B6 /* SetGameApp.swift in Sources */,
+				06E30BF424F953D6009041B6 /* SetGameViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

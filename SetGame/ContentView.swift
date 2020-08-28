@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct ContentView: View {
+    let viewModel = SetGameViewModel()
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        VStack {
+            ForEach(viewModel.model.cards) { card in
+                Text("\(card.description)")
+                    .padding()
+            }
+        }
     }
 }
 
