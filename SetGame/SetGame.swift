@@ -7,16 +7,16 @@
 
 import Foundation
 
-enum Shape: Int, CaseIterable {
+enum CardShape: Int, CaseIterable {
     case diamond, squiggle, oval
 }
 
 enum Color: Int, CaseIterable {
-    case red, green, blue
+    case red, blue, purple
 }
 
 enum ShapeCount: Int, CaseIterable {
-    case one, two, three
+    case one = 1, two = 2, three = 3
 }
 
 enum Shading: Int, CaseIterable {
@@ -29,7 +29,7 @@ struct Card: Identifiable {
     }
 
     var color: Color
-    var shape: Shape
+    var shape: CardShape
     var count: ShapeCount
     var shading: Shading
 
@@ -47,7 +47,7 @@ struct SetGameModel {
 
     init() {
         var cards = [Card]()
-        for shape in Shape.allCases {
+        for shape in CardShape.allCases {
             for color in Color.allCases {
                 for count in ShapeCount.allCases {
                     for shading in Shading.allCases {

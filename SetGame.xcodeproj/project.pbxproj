@@ -15,6 +15,8 @@
 		06E30BE424F93C16009041B6 /* SetGameUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BE324F93C16009041B6 /* SetGameUITests.swift */; };
 		06E30BF224F93C43009041B6 /* SetGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BF124F93C43009041B6 /* SetGame.swift */; };
 		06E30BF424F953D6009041B6 /* SetGameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BF324F953D6009041B6 /* SetGameViewModel.swift */; };
+		06E30BF624F95B5C009041B6 /* GridLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BF524F95B5C009041B6 /* GridLayout.swift */; };
+		06E30BF824F95CF7009041B6 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E30BF724F95CF7009041B6 /* Grid.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		06E30BE524F93C16009041B6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		06E30BF124F93C43009041B6 /* SetGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGame.swift; sourceTree = "<group>"; };
 		06E30BF324F953D6009041B6 /* SetGameViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SetGameViewModel.swift; sourceTree = "<group>"; };
+		06E30BF524F95B5C009041B6 /* GridLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GridLayout.swift; sourceTree = "<group>"; };
+		06E30BF724F95CF7009041B6 /* Grid.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -103,6 +107,8 @@
 				06E30BC824F93C12009041B6 /* ContentView.swift */,
 				06E30BF124F93C43009041B6 /* SetGame.swift */,
 				06E30BF324F953D6009041B6 /* SetGameViewModel.swift */,
+				06E30BF724F95CF7009041B6 /* Grid.swift */,
+				06E30BF524F95B5C009041B6 /* GridLayout.swift */,
 				06E30BCA24F93C16009041B6 /* Assets.xcassets */,
 				06E30BCF24F93C16009041B6 /* Info.plist */,
 				06E30BCC24F93C16009041B6 /* Preview Content */,
@@ -267,8 +273,10 @@
 			files = (
 				06E30BC924F93C12009041B6 /* ContentView.swift in Sources */,
 				06E30BF224F93C43009041B6 /* SetGame.swift in Sources */,
+				06E30BF624F95B5C009041B6 /* GridLayout.swift in Sources */,
 				06E30BC724F93C12009041B6 /* SetGameApp.swift in Sources */,
 				06E30BF424F953D6009041B6 /* SetGameViewModel.swift in Sources */,
+				06E30BF824F95CF7009041B6 /* Grid.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
