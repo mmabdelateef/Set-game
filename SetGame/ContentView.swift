@@ -9,12 +9,22 @@ import SwiftUI
 
 struct ContentView: View {
     let viewModel = SetGameViewModel()
-    var body: some View {
-        Grid(viewModel.model.cards) { card in
-            CardView(card: card)
-                .padding(2)
-        }
 
+    @State private var didAppear = false
+    var body: some View {
+        GeometryReader { proxy in
+            Grid(viewModel.model.cards) { card in
+                if didAppear {
+                    CardView(card: card)
+                        .padding(2)
+                        .transition(.offset(randomPoint(outside: proxy.frame(in: .global))))
+                }
+            }.onAppear {
+                withAnimation(Animation.easeOut(duration: 0.7)) {
+                    didAppear = true
+                }
+            }
+        }
     }
 }
 
@@ -24,6 +34,7 @@ struct CardView: View {
     var body: some View {
         ZStack {
             Group {
+                RoundedRectangle(cornerRadius: 5).foregroundColor(.white)
                 RoundedRectangle(cornerRadius: 5)
                     .stroke(style: StrokeStyle(lineWidth: 5))
             }.foregroundColor(.green)
@@ -66,6 +77,14 @@ struct Diamond: Shape {
         path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
         return path
     }
+}
+
+func randomPoint(outside frame: CGRect) -> CGSize {
+    // pick any random point in the frame
+    let randomPointInFrame = CGPoint(x: CGFloat.random(in: frame.minX ... frame.maxX),
+                                     y: CGFloat.random(in: frame.minY ... frame.maxY))
+    let randomAmplitude = CGFloat(Int.random(in: 2...3) * [-1, 1].randomElement()!)
+    return CGSize(width: randomAmplitude * randomPointInFrame.x, height: randomAmplitude * randomPointInFrame.y)
 }
 
 struct ContentView_Previews: PreviewProvider {
