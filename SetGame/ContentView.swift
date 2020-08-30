@@ -8,19 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
-    let viewModel = SetGameViewModel()
+    @ObservedObject var viewModel = SetGameViewModel()
 
     @State private var didAppear = false
     var body: some View {
         GeometryReader { proxy in
-            Grid(viewModel.model.cards) { card in
-                if didAppear {
+            Grid(viewModel.cardsOnTable.compactMap {$0} ) { card in
+                if didAppear, let card = card {
                     CardView(card: card)
                         .padding(2)
                         .transition(.offset(randomPoint(outside: proxy.frame(in: .global))))
+                        .onTapGesture {
+                            viewModel.select(card: card)
+                        }
                 }
             }.onAppear {
-                withAnimation(Animation.easeOut(duration: 0.7)) {
+                withAnimation(Animation.easeOut) {
                     didAppear = true
                 }
             }
@@ -36,23 +39,28 @@ struct CardView: View {
             Group {
                 RoundedRectangle(cornerRadius: 5).foregroundColor(.white)
                 RoundedRectangle(cornerRadius: 5)
-                    .stroke(style: StrokeStyle(lineWidth: 5))
-            }.foregroundColor(.green)
+                    .stroke(style: StrokeStyle(lineWidth: card.isSelected ? 5: 1))
+            }.foregroundColor(card.isSelected ? .green : .black)
             VStack {
                 ForEach(1 ..< card.count.rawValue + 1) {  _ in
-                    switch card.shape {
-                    case .squiggle:
-                        Rectangle()
-                    case .oval:
-                        Circle()
-                    case .diamond:
-                        Diamond()
-                    }
+                    shape(for: card)
                 }.foregroundColor(card.cardColor)
             }.padding(16)
         }.padding(2)
     }
 
+    func shape(for card: Card) -> some View {
+        Group {
+            switch card.shape {
+            case .squiggle:
+                Rectangle()
+            case .oval:
+                Circle()
+            case .diamond:
+                Diamond()
+            }
+        }.opacity(card.shading == .striped ? 0.3 : 1)
+    }
 }
 
 extension Card {

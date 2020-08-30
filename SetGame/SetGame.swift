@@ -33,7 +33,7 @@ struct Card: Identifiable {
     var count: ShapeCount
     var shading: Shading
 
-    var isSelected: Bool
+    var isSelected: Bool = false
 }
 
 extension Card: CustomStringConvertible {
@@ -43,7 +43,10 @@ extension Card: CustomStringConvertible {
 }
 
 struct SetGameModel {
-    var cards: [Card]
+    private static let maxNumberOfCardsOnTable = 12
+    private var cards: [Card]
+
+    private(set) var cardsOnTable: [Card?] = Array(repeating: nil, count: SetGameModel.maxNumberOfCardsOnTable)
 
     init() {
         var cards = [Card]()
@@ -51,13 +54,31 @@ struct SetGameModel {
             for color in Color.allCases {
                 for count in ShapeCount.allCases {
                     for shading in Shading.allCases {
-                        cards.append(Card(color: color, shape: shape, count: count, shading: shading, isSelected: false))
+                        cards.append(Card(color: color, shape: shape, count: count, shading: shading))
                     }
                 }
             }
         }
         self.cards = cards.shuffled()
     }
+
+    mutating func populateTable() {
+        cardsOnTable = cardsOnTable.map { if $0 == nil {
+            return cards.popLast()
+        }
+        return nil
+        }
+    }
+
+    mutating func select(card: Card) {
+        guard let cardIdx = cardsOnTable.firstIndex(where: { $0?.id == card.id }) else {
+            assertionFailure("Card must be on table to be selected")
+            return
+        }
+
+        cardsOnTable[cardIdx]?.isSelected.toggle()
+    }
+
 }
 
 extension Array where Element == Card {
