@@ -19,7 +19,7 @@ struct ContentView: View {
                         .padding(2)
                         .transition(.offset(randomPoint(outside: proxy.frame(in: .global))))
                         .onTapGesture {
-                            withAnimation(Animation.easeIn) {
+                            withAnimation(Animation.easeIn(duration: 3)) {
                                 viewModel.select(card: card)
                             }
                         }

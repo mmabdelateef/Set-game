@@ -47,6 +47,7 @@ extension Card: CustomStringConvertible {
 struct SetGameModel {
     private static let maxNumberOfCardsOnTable = 12
     private var cards: [Card]
+    private var matchedCards: [Card] = []
 
     private(set) var cardsOnTable: [Card?] = Array(repeating: nil, count: SetGameModel.maxNumberOfCardsOnTable)
 
@@ -66,9 +67,10 @@ struct SetGameModel {
 
     mutating func populateTable() {
         cardsOnTable = cardsOnTable.map { if $0 == nil {
-            return cards.popLast()
-        }
-        return nil
+                return cards.popLast()
+            } else {
+                return $0
+            }
         }
     }
 
@@ -85,9 +87,11 @@ struct SetGameModel {
             }
 
             if alreadySelectedCards.allSatisfy({ $0.isMatch }) {
+                matchedCards.append(contentsOf: alreadySelectedCards)
                 cardsIndices.forEach {
                     cardsOnTable[$0] = nil
                 }
+                populateTable()
             } else if alreadySelectedCards.allSatisfy({ $0.isMissMatch }) {
                 cardsIndices.forEach {
                     cardsOnTable[$0]?.isSelected = false
