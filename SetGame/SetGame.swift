@@ -34,6 +34,8 @@ struct Card: Identifiable {
     var shading: Shading
 
     var isSelected: Bool = false
+    var isMatch = false
+    var isMissMatch = false
 }
 
 extension Card: CustomStringConvertible {
@@ -71,14 +73,63 @@ struct SetGameModel {
     }
 
     mutating func select(card: Card) {
+        let alreadySelectedCards = cardsOnTable.compactMap { $0 }
+            .filter { $0.isSelected }
+
+        if alreadySelectedCards.count == 3 {
+            // three cards already selected on table.
+            // if match, move to matched cards and deal three new cards
+            // if mismatch, deselect
+            let cardsIndices: [Int] = alreadySelectedCards.map { card in
+                cardsOnTable.firstIndex(where: { $0?.id == card.id })!
+            }
+
+            if alreadySelectedCards.allSatisfy({ $0.isMatch }) {
+                cardsIndices.forEach {
+                    cardsOnTable[$0] = nil
+                }
+            } else if alreadySelectedCards.allSatisfy({ $0.isMissMatch }) {
+                cardsIndices.forEach {
+                    cardsOnTable[$0]?.isSelected = false
+                    cardsOnTable[$0]?.isMatch = false
+                    cardsOnTable[$0]?.isMissMatch = false
+                }
+            } else {
+                assertionFailure("Must be match or mismatch")
+            }
+        }
+
         guard let cardIdx = cardsOnTable.firstIndex(where: { $0?.id == card.id }) else {
             assertionFailure("Card must be on table to be selected")
             return
         }
-
         cardsOnTable[cardIdx]?.isSelected.toggle()
+
+        let selectedCards = cardsOnTable.compactMap { $0 }
+            .filter { $0.isSelected }
+
+        checkSet(cards: selectedCards)
     }
 
+    private mutating func checkSet(cards: [Card]) {
+        let cardsIndices: [Int] = cards.map { card in
+            cardsOnTable.firstIndex(where: { $0?.id == card.id })!
+        }
+
+        if cards.count < 3 {
+            cardsIndices.forEach {
+                cardsOnTable[$0]?.isMatch = false
+                cardsOnTable[$0]?.isMissMatch = false
+            }
+        } else {
+            let isMatch = cards.isSet
+            cardsIndices.forEach {
+                cardsOnTable[$0]?.isMatch = isMatch
+                cardsOnTable[$0]?.isMissMatch = !isMatch
+            }
+        }
+
+    }
 }
 
 extension Array where Element == Card {

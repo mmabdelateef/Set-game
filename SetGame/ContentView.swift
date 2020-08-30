@@ -19,7 +19,9 @@ struct ContentView: View {
                         .padding(2)
                         .transition(.offset(randomPoint(outside: proxy.frame(in: .global))))
                         .onTapGesture {
-                            viewModel.select(card: card)
+                            withAnimation(Animation.easeIn) {
+                                viewModel.select(card: card)
+                            }
                         }
                 }
             }.onAppear {
@@ -40,7 +42,7 @@ struct CardView: View {
                 RoundedRectangle(cornerRadius: 5).foregroundColor(.white)
                 RoundedRectangle(cornerRadius: 5)
                     .stroke(style: StrokeStyle(lineWidth: card.isSelected ? 5: 1))
-            }.foregroundColor(card.isSelected ? .green : .black)
+            }.foregroundColor(color(for: card))
             VStack {
                 ForEach(1 ..< card.count.rawValue + 1) {  _ in
                     shape(for: card)
@@ -60,6 +62,18 @@ struct CardView: View {
                 Diamond()
             }
         }.opacity(card.shading == .striped ? 0.3 : 1)
+    }
+
+    func color(for card: Card) -> SwiftUI.Color {
+        guard card.isSelected else { return .black }
+
+        if card.isMatch {
+            return .green
+        } else if card.isMissMatch {
+            return .red
+        } else {
+            return .orange
+        }
     }
 }
 
