@@ -18,14 +18,15 @@ struct ContentView: View {
                     CardView(card: card)
                         .padding(2)
                         .transition(.offset(randomPoint(outside: proxy.frame(in: .global))))
+                        .animation(.easeIn(duration: 3))
                         .onTapGesture {
-                            withAnimation(Animation.easeIn(duration: 3)) {
+                            withAnimation(Animation.easeInOut(duration: 1)) {
                                 viewModel.select(card: card)
                             }
                         }
                 }
             }.onAppear {
-                withAnimation(Animation.easeOut) {
+                withAnimation(Animation.easeOut(duration: 4)) {
                     didAppear = true
                 }
             }
@@ -40,9 +41,12 @@ struct CardView: View {
         ZStack {
             Group {
                 RoundedRectangle(cornerRadius: 5).foregroundColor(.white)
-                RoundedRectangle(cornerRadius: 5)
-                    .stroke(style: StrokeStyle(lineWidth: card.isSelected ? 5: 1))
-            }.foregroundColor(color(for: card))
+                ZStack {
+                    RoundedRectangle(cornerRadius: 5)
+                        .stroke(style: StrokeStyle(lineWidth: card.isSelected ? 5: 1))
+                        .foregroundColor(color(for: card))
+                }
+            }
             VStack {
                 ForEach(1 ..< card.count.rawValue + 1) {  _ in
                     shape(for: card)
@@ -59,7 +63,7 @@ struct CardView: View {
             case .oval:
                 Circle()
             case .diamond:
-                Diamond()
+                Diamond(isOpen: card.shading == .open)
             }
         }.opacity(card.shading == .striped ? 0.3 : 1)
     }
@@ -91,12 +95,16 @@ extension Card {
 }
 
 struct Diamond: Shape {
+    var isOpen: Bool
+
     func path(in rect: CGRect) -> Path {
         var path = Path()
         path.move(to: CGPoint(x: rect.minX, y: rect.midY))
         path.addLine(to: CGPoint(x: rect.midX, y: rect.maxY))
         path.addLine(to: CGPoint(x: rect.maxX, y: rect.midY))
         path.addLine(to: CGPoint(x: rect.midX, y: rect.minY))
+        path.closeSubpath()
+        if isOpen { path = path.strokedPath(StrokeStyle(lineWidth: 4)) }
         return path
     }
 }

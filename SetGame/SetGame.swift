@@ -141,12 +141,19 @@ extension Array where Element == Card {
         guard count == 3 else { return false } // must be three cards
 
         let first = self[0], second = self[1], third = self[2]
-
         let isSameColor = first.color == second.color && first.color == third.color
         let isSameShape = first.shape == second.shape && first.shape == third.shape
         let isSameCount = first.count == second.count && first.count == third.count
         let isSameShading = first.shading == second.shading && first.shading == third.shading
 
-        return [isSameColor, isSameShape, isSameCount, isSameShading].filter { $0 }.count == 1
+
+//        let isSameColor =  [first.color, second.color, third.color,].reduce(true, ==)
+//        let isSameShape = [first.shape, second.shape, third.shape,].reduce(true, ==)
+//        let isSameCount = [first.count, second.count, third.count,].reduce(true, ==)
+//        let isSameShading = [first.shading, second.shading, third.shading,].reduce(true, ==)
+
+        return [isSameColor, isSameShape, isSameCount, isSameShading].reduce(false) { result, next -> Bool in
+            result || next
+        }
     }
 }
