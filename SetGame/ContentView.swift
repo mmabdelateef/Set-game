@@ -15,8 +15,6 @@ struct ContentView: View {
         GeometryReader { proxy in
             Grid(viewModel.cardsOnTable.compactMap {$0} ) { card in
                 if didAppear, let card = card {
-//                    CardView(card: card)
-
                     CardView(isCardSelected: card.isSelected, cardMatchState: self.matchState(for: card), cardShape: card.shape, cardShading: card.shading, shapeCount: card.count)
                         .padding(2)
                         .transition(.offset(randomPoint(outside: proxy.frame(in: .global))))
@@ -33,6 +31,17 @@ struct ContentView: View {
                 }
             }
         }
+    }
+
+    private func matchState(for card: Card) -> CardView.CardMatchState {
+        if card.isMatch {
+            return .match
+        } else if card.isMissMatch {
+            return .mismatch
+        } else if card.isSelected {
+            return .selected
+        }
+        return .unselected
     }
 }
 
@@ -58,6 +67,7 @@ struct CardView: View {
                     RoundedRectangle(cornerRadius: 5)
                         .stroke(style: StrokeStyle(lineWidth: isCardSelected ? 5: 1))
                         .foregroundColor(self.color(for: self.cardMatchState))
+                        .animation(nil)
                 }
             }
             VStack {
