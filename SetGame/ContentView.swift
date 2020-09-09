@@ -15,7 +15,9 @@ struct ContentView: View {
         GeometryReader { proxy in
             Grid(viewModel.cardsOnTable.compactMap {$0} ) { card in
                 if didAppear, let card = card {
-                    CardView(card: card)
+//                    CardView(card: card)
+
+                    CardView(isCardSelected: card.isSelected, cardMatchState: self.matchState(for: card), cardShape: card.shape, cardShading: card.shading, shapeCount: card.count)
                         .padding(2)
                         .transition(.offset(randomPoint(outside: proxy.frame(in: .global))))
                         .animation(.easeIn(duration: 3))
@@ -35,48 +37,63 @@ struct ContentView: View {
 }
 
 struct CardView: View {
+    enum CardMatchState {
+        case match
+        case mismatch
+        case selected
+        case unselected
+    }
 
-    var card: Card
+    var isCardSelected: Bool
+    var cardMatchState: CardMatchState
+    var cardShape: CardShape
+    var cardShading: Shading
+    var shapeCount: ShapeCount
+
     var body: some View {
         ZStack {
             Group {
                 RoundedRectangle(cornerRadius: 5).foregroundColor(.white)
                 ZStack {
                     RoundedRectangle(cornerRadius: 5)
-                        .stroke(style: StrokeStyle(lineWidth: card.isSelected ? 5: 1))
-                        .foregroundColor(color(for: card))
+                        .stroke(style: StrokeStyle(lineWidth: isCardSelected ? 5: 1))
+                        .foregroundColor(self.color(for: self.cardMatchState))
                 }
             }
             VStack {
-                ForEach(1 ..< card.count.rawValue + 1) {  _ in
-                    shape(for: card)
-                }.foregroundColor(card.cardColor)
+                ForEach(1 ..< shapeCount.rawValue + 1) {  _ in
+                    CardShapeView(cardShape: self.cardShape, isOpen: self.cardShading == .open)
+                }.foregroundColor(self.color(for: cardMatchState))
             }.padding(16)
         }.padding(2)
     }
 
-    func shape(for card: Card) -> some View {
-        Group {
-            switch card.shape {
-            case .squiggle:
-                Rectangle()
-            case .oval:
-                Circle()
-            case .diamond:
-                Diamond(isOpen: card.shading == .open)
-            }
-        }.opacity(card.shading == .striped ? 0.3 : 1)
-    }
-
-    func color(for card: Card) -> SwiftUI.Color {
-        guard card.isSelected else { return .black }
-
-        if card.isMatch {
+    func color(for cardMatchState: CardMatchState) -> SwiftUI.Color {
+        switch cardMatchState {
+        case .match:
             return .green
-        } else if card.isMissMatch {
+        case .mismatch:
             return .red
-        } else {
+        case .selected:
             return .orange
+        case .unselected:
+            return .black
+        }
+    }
+}
+
+struct CardShapeView: Shape {
+    var cardShape: CardShape
+    var isOpen: Bool
+
+    func path(in rect: CGRect) -> Path {
+        switch cardShape {
+        case .diamond:
+            return Diamond(isOpen: isOpen).path(in: rect)
+        case .squiggle:
+            return Rectangle().path(in: rect)
+        case .oval:
+            return Circle().path(in: rect)
         }
     }
 }
